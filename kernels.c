@@ -25,36 +25,41 @@ const team_t team = {
  * naive_flip - The naive baseline version of flip 
  */
 char naive_flip_descr[] = "naive_flip: Naive baseline implementation";
-// void naive_flip(int dim, pixel *src, pixel *dst) 
-// {
-//     int i, j;
-//     int ni = 0;
-//     for (i = 0; i < dim; i++){
-//         for (j = 0; j < dim; j++){
-//             int dstRIDXF = RIDX_F(i, j, dim);
-//             int srcRIDX = ni + j;
-//             dst[dstRIDXF].red   = src[srcRIDX].red;
-//             dst[dstRIDXF].green = src[srcRIDX].green;
-//             dst[dstRIDXF].blue  = src[srcRIDX].blue;
-//         }
-//         ni += dim;
-//     }
-// }
-
 void naive_flip(int dim, pixel *src, pixel *dst) 
 {
     int i, j;
-    int dimsqr = dim*dim;
+    int ni = 0;
     int dstRIDXF;
-    for (i = 0; i < dimsqr; i++){
-        j = i%dim;
-        //dstRIDXF = j*dim + 
-        dstRIDXF = RIDX_F(i, j, dim);
-        dst[dstRIDXF].red   = src[i].red;
-        dst[dstRIDXF].green = src[i].green;
-        dst[dstRIDXF].blue  = src[i].blue;
+    int srcRIDX;
+    for (i = 0; i < dim; i++){
+        srcRIDX = ni;
+        dstRIDXF = i;
+        for (j = 0; j < dim; j++){
+            //dstRIDXF = j*dim + i;
+            dst[dstRIDXF].red   = src[srcRIDX].red;
+            dst[dstRIDXF].green = src[srcRIDX].green;
+            dst[dstRIDXF].blue  = src[srcRIDX].blue;
+            srcRIDX++;
+            dstRIDXF += dim;
+        }
+        ni += dim;
     }
 }
+
+// void naive_flip(int dim, pixel *src, pixel *dst) 
+// {
+//     int i, j;
+//     int dimsqr = dim*dim;
+//     int dstRIDXF;
+//     for (i = 0; i < dimsqr; i++){
+//         j = i%dim;
+//         //dstRIDXF = j*dim + 
+//         dstRIDXF = RIDX_F(i, j, dim);
+//         dst[dstRIDXF].red   = src[i].red;
+//         dst[dstRIDXF].green = src[i].green;
+//         dst[dstRIDXF].blue  = src[i].blue;
+//     }
+// }
 
 /* 
  * flip - Your current working version of flip
